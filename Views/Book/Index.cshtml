@@ -1,0 +1,102 @@
+﻿@model IEnumerable<OnlineBookManagementSystem.Models.Book>
+
+@{
+    ViewBag.Title = "Book Management";
+}
+
+<h2>Book Management</h2>
+
+<hr />
+
+<h3>Welcome, @Session["author_name"]</h3>
+
+<br />
+
+<p>
+    @Html.ActionLink("Add New Book", "Create", "Book", null, new { @class = "btn btn-primary" })
+</p>
+
+<br />
+@using (Html.BeginForm("Search", "Book", FormMethod.Get))
+{
+    <label>Book Type:</label>
+
+    @Html.DropDownList(
+        "bookType_id",
+        new SelectList(ViewBag.BookTypes, "bookType_id", "bookType_name"),
+        "-- Select Book Type --",
+        new { @class = "form-control", style = "width:300px; display:inline-block;" }
+    )
+
+    <input type="submit" value="Search" class="btn btn-primary" />
+
+    
+}
+<br />
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+        <tr>
+            <th>Book ID</th>
+            <th>Book Name</th>
+            <th>Book Type</th>
+            <th>Author</th>
+            <th>Publisher</th>
+            <th>Publication Date</th>
+            <th>ISBN</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Book_id</td>
+
+                <td>@item.Book_name</td>
+
+                <td>@item.BookType.bookType_name</td>
+
+                <td>@item.Author.Author_name</td>
+
+                <td>@item.Publisher.Publisher_name</td>
+
+                <td>@item.Publish_date</td>
+
+                <td>@item.ISBN_no</td>
+
+                <td>@item.Price</td>
+
+                <td>
+                    @Html.ActionLink(
+                        "Edit",
+                        "Edit",
+                        "Book",
+                        new { id = item.Book_id },
+                        null
+                    )
+                    |
+                    @Html.ActionLink(
+                        "Delete",
+                        "Delete",
+                        "Book",
+                        new { id = item.Book_id },
+                        null
+                    )
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+<br />
+
+<a href="@Url.Action("Logout", "Account")" class="btn btn-danger">
+    Logout
+</a>
